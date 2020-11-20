@@ -1,0 +1,306 @@
+#Name: Sweta Kumari 
+#Facebook Friends
+
+#(1) Describe the data structure and identify int and binary variables. 
+#a. Read the FacebookFriends file.
+```{r}
+fbfriend<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\FacebookFriends.csv", header=T)
+attach(fbfriend)
+names(fbfriend)
+```
+
+#b. To determine the data type of each variables, use str function.
+```{r}
+str(fbfriend)
+```
+#Comment on section1: FacebookFriends is the dataset where number of observations are 715 and number of variables are 17. Here, Friends is dependent or response variable and all other variables are independent or explanatory variable. We have to predict the number of friends on Facebook based on all other independent variables: Age, Photos, # of Tags,  Albums, Gender,  Emp, Profile, Cover, Orientation, Relationship, Posts, Replies, Children, Likes, Edu, Events. 
+
+#Integer variables are Age, Photos, # of Tags,  Albums, Posts, Replies, Children, Likes, Events. 
+
+#Binary variables are Gender, Emp, Profile, Cover, Orientation, Relationship, Edu.
+
+
+#(2) Get the mean, median, sample standard deviation, and coefficient of variation for all variables. What do these statistics tell you about the distributions?
+
+#a. Mean of all variable.
+```{r}
+sapply(Filter(is.numeric, fbfriend), FUN = mean, na.rm = TRUE)
+```
+
+#b. Median of all variable.
+```{r}
+sapply(Filter(is.numeric, fbfriend), FUN = median, na.rm = TRUE)
+```
+
+#c. Standard deviation of all variable
+```{r}
+sapply(Filter(is.numeric, fbfriend), FUN = sd, na.rm = TRUE)
+```
+
+#d. Co-efficinet of variation of all variable. Define co.var function and sapply function.
+```{r}
+co.var <- function(x) (100*sd(x)/mean(x))
+sapply(Filter(is.numeric, fbfriend), FUN = co.var)
+```
+#Comment on Section2: 
+#1. Age: Average age of Facebook user is 24.4 years while median is 22 years. Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 6.96 which is far from mean. Co-efficient of variation is 28.5% is not high and shows the percentage of dispersion of data around the mean.
+
+#2. Photos: Average number of photos is 724 while median is 320.  Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 1265.112 which is far from mean. Co-efficient of variation is 174.76% is high and shows the percentage of dispersion of data around the mean.
+
+#3. Number of Tags: Average number of tag is 458 while median is 250.  Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 720.8355 which is far from mean. Co-efficient of variation is 157.35% is high and shows the percentage of dispersion of data around the mean.
+
+#4. Albums: Average number of albums is 19 while median is 12.  Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 22 which is near mean. Co-efficient of variation is 118.7% is high and shows the percentage of dispersion of data around the mean.
+
+#5. Gender: Male users are more than female users. In the dataset, there is one more entry (2) apart from 0 and 1. Since, description says it is binary variable. I am considering same too.
+
+#6. Emp: Number of employed users is more than (approx. 75%) number of unemployed user in Facebook. 
+
+#7. Profile: Most of the Facebook users (approx. 91%) have profile pictures of themselves. Only 9% are using something else on their profile picture.
+
+#8. Cover: Approx. half of the users use cover photo of themselves. Rest of the users use something else on their cover photo.
+
+#9. Orientation: 95.6% users have Sexual orientation as heterosexual.
+
+#10. Relationship: 49% of the users shows that they are in relationship. Rest 51% do not show their relationship status as in relationship.
+
+#11. Posts: Average number of posts are 38 (approx.) while median is 15. Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 90.4 which is far from mean. Co-efficient of variation is 240.6 % is high and shows the percentage of dispersion of data around the mean.
+
+#12. Replies: Average number of replies from the individual on the 'timeline' 35 while median is 14. Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 83.6 which is far from mean. Co-efficient of variation is 240.2 % is high and shows the percentage of dispersion of data around the mean.
+
+#13. Children: Average number of children is 0.211 which means most of the users doesn’t have kids and median shows 0. The standard deviation is 0.651 which is near mean. Co-efficient of variation is 308.5 % is high and shows the percentage of dispersion of data around the mean.
+
+#14. Likes: Average number of likes in the main page is 145 while median is 59. Since, mean is greater than median, most of the data will be distributed on the left side. The standard deviation is 261.4 which is far from mean. Co-efficient of variation is 180.5 % is high and shows the percentage of dispersion of data around the mean.
+
+#15. Edu: 26.7% of users mention their high school or less information. The standard deviation is 0.44 which is not far from mean. Co-efficient of variation is 165.7 % is high and shows the percentage of dispersion of data around the mean.
+
+#16. Events: Average number of events listed is 8.8 while median is 4. The standard deviation is 24 which is far from mean. Co-efficient of variation is 271.12 % is high and shows the percentage of dispersion of data around the mean.
+
+#17. Friends: Average number of friends is 696 while median is 563. The standard deviation is 599.5 which is not too far from mean. Co-efficient of variation is 86.15 % is high and shows the percentage of dispersion of data around the mean.
+
+#All variables are right skewed, where mean is greater than median.
+
+#(3)Choose all non-binary variables and create frequency tabulations, boxplots, and histograms for all. Describe the distribution for each. 
+#a. Create frequency tabulations
+
+```{r}
+library(summarytools)
+library(DT)
+datatable(freq(fbfriend$Age)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Photos)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$X..of.Tags)) %>% formatRound('% Valid', digits=2) %>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Albums))%>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Posts)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Replies)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Children)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Likes)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Events)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+datatable(freq(fbfriend$Friends)) %>% formatRound('% Valid', digits=2)%>%  formatRound('% Valid Cum.',digits=2) %>% formatRound('% Total', digits=2) %>% formatRound('% Total Cum.', digits=2)
+```
+#b. Box plot of all non-binary variables with five number summary
+
+#Box plot of Age 
+```{r}
+boxplot(Age, ylim=c(10,80), las=1, main="BoxPlot of Age", ylab="Age", col="lavender")
+fivenum(Age, na.rm = TRUE)
+```
+
+#Box Plot of Photos 
+```{r}
+boxplot(Photos, las=1, main="BoxPlot of Photos", ylab="Photos", col="lavender" )
+fivenum(Photos, na.rm = TRUE)
+```
+
+#Box plot of Number of Tags 
+```{r}
+boxplot(X..of.Tags,las=1, main="BoxPlot of number of tags", ylab="Number of Tags", col="lavender")
+fivenum(X..of.Tags, na.rm = TRUE)
+```
+
+#Box Plot of Albums 
+```{r}
+boxplot(Albums, las=1, main="BoxPlot of Albums", ylab="Albums", col="lavender")
+fivenum(Albums, na.rm = TRUE)
+```
+
+#Box plot of Posts 
+```{r}
+boxplot(Posts, las=1, main="BoxPlot of Posts", ylab="Posts", col="lavender")
+fivenum(Posts, na.rm = TRUE)
+```
+
+#Box plot of Replies 
+```{r}
+boxplot(Replies, las=1, main="BoxPlot of Replies", ylab="Replies", col="lavender")
+fivenum(Replies, na.rm = TRUE)
+```
+
+#Box plot of Children 
+```{r}
+boxplot(Children, las=1, main="BoxPlot of Children", ylab="Children", col="lavender")
+fivenum(Children, na.rm = TRUE)
+```
+
+#Box plot of Likes
+```{r}
+boxplot(Likes, las=1, main="BoxPlot of Likes", ylab="Likes", col="lavender")
+fivenum(Likes, na.rm = TRUE)
+```
+
+#Box plot of Events 
+```{r}
+boxplot(Events, las=1, main="BoxPlot of Events", ylab="Events", col="lavender")
+fivenum(Likes, na.rm = TRUE)
+```
+
+#Box plot of Friends 
+```{r}
+boxplot(Friends, las=1, main="BoxPlot of Friends", ylab="Friends", col="lavender")
+fivenum(Likes, na.rm = TRUE)
+```
+
+#c. Histogram for all variables
+#Histogram of Age
+```{r}
+hist(Age, col="lightgreen")
+```
+#Histogram of Photos
+```{r}
+hist(Photos, main="Histogram of Photos", xlab="Photos", col="lightgreen")
+```
+
+#Histogram of Number of Tags
+```{r}
+hist(X..of.Tags, main="Histogram of number of tags", xlab="Number of Tags", ylim = c(0, 700), col="lightgreen")
+```
+
+#Histogram of Albums
+```{r}
+hist(Albums, ylim = c(0, 600), col="lightgreen")
+```
+
+#Histogram of Posts 
+```{r}
+hist(Posts, col="lightgreen")
+```
+
+#Histogram of Replies 
+```{r}
+hist(Replies, ylim = c(0, 700), col="lightgreen")
+```
+
+#Histogram of Children
+```{r}
+hist(Children, ylim = c(0, 700), col="lightgreen")
+```
+
+#Histogram of Likes
+```{r}
+hist(Likes, ylim=c(0, 600), col="lightgreen")
+```
+
+#Histogram of Events and Friends
+```{r}
+hist(Events, col="lightgreen")
+```
+
+#Histogram of Events and Friends
+```{r}
+hist(Friends, xlab="Friends", main="Histogram of Friends", col="lightgreen")
+```
+
+#Comments on Section3: 
+
+#1. Age: The shape is right skewed where mean (24.4) is greater than median (22). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile. There are few outliers with maximum age as 81 in the dataset.
+
+#2. Photos: The shape is right skewed where mean (723.9) is greater than median(320 Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile. There are few outliers with maximum number of photos as 11995. 
+
+#3. Number of Tags: The shape is right skewed where mean (458) is greater than median (250). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum tag as 10460 in the dataset.
+
+#4. Albums: The shape is right skewed where mean (18.95) is greater than median (12). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum albums as 172 in the dataset.
+
+#5. Posts: The shape is right skewed where mean (37.57) is greater than median (15). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum number of posts as 794 in the dataset.
+
+#6. Replies: The shape is right skewed where mean (34.8) is greater than median (14). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum number of posts as 752 in the dataset.
+
+#7. Children: The shape is right skewed where mean (0.211) is greater than median (0). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  
+
+#8. Likes: The shape is right skewed where mean (144.8) is greater than median (59). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum number of likes as 2619 in the dataset.
+
+#9. Events: The shape is right skewed where mean (8.85) is greater than median (4). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum number of likes as 396 in the dataset.
+
+#10. Friends: The shape is right skewed where mean (695.85) is greater than median (563). Histogram: Most of the data is on left side of the Histogram and it has longer tail on the right side. The distribution of the data is not symmetric. In box plot, Median is close to first quartile.  There are few outliers with maximum number of likes as 4999 in the dataset.
+
+#All non-binary variables are right skewed. Frequency tabulations were drawn for all non-binary variables and values were rounded off to two decimal places.
+
+#(4) Propose a regression model to predict number of Friends by selecting significant non-binary variables. Estimate the model and describe the fit (R-squared, etc.). Which of your proposed predictors are  significant? (Note: need to use the correlation map / heatmap to provide quantitative values for significance).
+#a. Correlation heatmap for all variables.
+```{r}
+library(ggplot2)
+library(ggcorrplot)
+fbfriend1 <- data.frame(Age, Photos, X..of.Tags, Albums, Posts,Replies, Children, Likes, Events,Friends)
+corr <- round(cor(fbfriend1), 1)
+ggcorrplot(corr, lab = TRUE)
+```
+
+#b. Multiple regrssion model
+#Model1: All non-binary variables are used for regression model.
+```{r}
+model1<-lm(Friends ~ Age + Photos + X..of.Tags + Albums + Posts + Replies +  Children + Likes + Events)
+summary(model1)
+plot(model1)
+```
+
+#Model2: Age, Photos, X..of.Tags, Posts, Replies, Likes variables are used for regression model.
+```{r}
+model2 <- update(model1, ~. -Children- Events- Albums)
+summary(model2)
+```
+
+#Model3: Age, Photos, X..of.Tags, Likes variables are used for regression model.
+```{r}
+model3<-update(model2, ~. -Posts-Replies)
+summary(model3)
+plot(model3)
+```
+
+#Let's check the number if friends at 14th row.
+```{r}
+fbfriend[14, 1:17]
+```
+#Predict the number of friends with the help of model4.Let's predict for the number of friends for row number 14.
+```{r}
+predict(model3,list(Age=24,X..of.Tags=504, Likes=113, Photos=402))
+```
+
+```{r}
+model4<-lm(log(Friends) ~ Age + Photos + X..of.Tags + Likes)
+summary(model4)
+plot(model4)
+```
+#Predict the number of friends with the help of model4.Let's predict for the number of friends for row number 14.
+```{r}
+exp(predict(model4,list(Age=24,X..of.Tags=504, Likes=113, Photos=402)))
+```
+
+#Comment on section 4:
+#Correlation heatmap: Replies and Posts are highly correlated (0.9). Children and Age is highly correlated (0.6). Similarly Albums is correlated with number of Photos (0.8) and number of tags (0.5).  Other data in matrix shows weak correlation among the variables.
+
+#Multiple Regression model: 95% confidence interval, alpha=0.05, two tailed t-test.
+#Model1: We performed multiple regression (model1) with all non-binary independent variable to predict the number of friends. The adjusted R square is 0.133 which says that 13.3% of variation is explained by the model. Rest of the variation is unexplained by the model. P-value of Age, Number of tags, Gender, Likes have significant p value (less than 0.05).
+
+#Model2: To identify the significant predictors, I started removing most insignificant predictors that has higher p-value (greater than 0.05). I removed Children, Albums and Events. The adjusted R square is 0.1326 which says that 13.26% of variation is explained by the model. Since there is still insignificant predictors in the model, I further eliminated the predictors.
+
+#Model3: To identify further significant independent variable, I removed rest two insignificant predictors (Replies, Posts) that has p-value less than 0.05. At this time, We have all predictors which have p-value less than 0.05.  The adjusted R square is 0.131 which says that 13.1% of variation is explained by the model. 
+
+#Model4: To improve the model further, i redefined model where log(response variable) is linear function of predictors.The adjusted R square is improved and it is 0.1733 which says that 17.33% of variation is explained by the model. This model is better than our other model as R square is increased from 13% to 17%.
+
+#Model 4 describes best fit among all other model described above. Predictor's P-value is significant. The Significant predictors are Age, Photos, X..of.Tags, Likes. Also, the predicted value for number of friends is better than the model. 
+
+#Residual analysis: For regression, four criteria should be met: linearity, non-autocorrelation, normality of error and equal variance. I have plotted the diagnostic plots for model1 and model3. Since, there is no improvement in the residual plots in model1 and model3. I have used model 4 where normal QQ plot is much better than previous models. Residual vs fitted plot: The fitted line is approximate straight line means assumption of linearity is met. Normal Q-Q plot: Normal Quantile-Quantile is ok but not perfect straight line. Errors are not perfectly normally distributed but improved compared to model 1 and model3. Scale Location: Scale location shows the straight line with slight curve. It shows somewhat heteroscedastic trend but improved as compared to model1 and model3. Residual vs Leverage: There are no influential points in the graph which are outside the Cook’s distance line and need revaluation of the model. This graph is much better than previous models(model1 and model3)
+
+#Conclusion
+#1.	Significant predictors to predict the number of friends is Age, Photos, X..of.Tags, Likes.
+#2.	All non-binary variables are right skewed, where mean is greater than median.
+#3.	As the sign of co-efficient for Age is negative which shows that older people have a smaller number of friends in the Facebook compared to young group (21years to 25 years).
+#4.	Since R square of the model is 17% which is low. Predictors are not good enough in the dataset to predict the number of friends.
+#5.	Sign of the co-efficient of number of tags, photos, likes is positive. Number of friends will be more if number of tags, photos and likes are more in Facebook.

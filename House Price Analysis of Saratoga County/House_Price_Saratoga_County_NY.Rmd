@@ -1,0 +1,427 @@
+#Project- House Price of Saratoga County, New York
+
+#1. Descriptive Statistics
+#Read the Dataset.
+```{r}
+HP<-read.csv("C:\\Users\\Sweta\\Documents\\Data\\house price.csv", header=T)
+attach(HP)
+names(HP)
+```
+
+#Remove rows which has missing values in the dataframe
+```{r}
+HP <- na.omit(HP)
+```
+
+#Check the first few rows of the dataframe
+```{r}
+head(HP)
+```
+
+#Check the data types of the dataframe
+```{r}
+str(HP)
+```
+
+#Change Fireplaces, Bedrooms, Bathrooms and Rooms into factor variables
+```{r}
+HP$Fireplaces <- as.factor(HP$Fireplaces)
+HP$Bedrooms <- as.factor(HP$Bedrooms)
+HP$Bathrooms <- as.factor(HP$Bathrooms)
+HP$Rooms <- as.factor(HP$Rooms)
+```
+
+#Change the Waterfront, New.Construct, Central.Air into factor variable and turn the numbers 0 and 1 into "No" and "Yes" respectively.
+```{r}
+HP$Waterfront=factor(HP$Waterfront,labels=c("No","Yes"))
+HP$Central.Air=factor(HP$Central.Air,labels=c("No","Yes"))
+HP$New.Construct=factor(HP$New.Construct,labels=c("No","Yes"))
+```
+
+```{r}
+options(scipen = 999)
+```
+
+#Mean
+```{r}
+sapply(Filter(is.numeric, HP), FUN = mean, na.rm = TRUE)
+```
+
+#Median
+```{r}
+sapply(Filter(is.numeric, HP), FUN = median, na.rm = TRUE)
+```
+
+#five number summary
+```{r}
+sapply(Filter(is.numeric, HP), FUN = fivenum, na.rm = TRUE)
+```
+
+#Calculate the range of house price in Saratoga.
+```{r}
+range(Price)
+```
+
+#Histogram of continuous variables
+#Histogram for House Price
+```{r} 
+library(ggplot2)
+ggplot(HP, aes(x = Price, fill = ..count..)) + geom_histogram(binwidth = 20000) + ggtitle("Histogram of House Price") + ylab("Frequency") + xlab("Housing Price") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Histogram for Lot.Size
+```{r}  
+ggplot(HP, aes(x = Lot.Size, fill = ..count..)) + geom_histogram(binwidth = 0.5) + ggtitle("Histogram of Lot Size") + ylab("Frequency") + xlab("Lot Size") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Histogram for Age
+```{r}
+ggplot(HP, aes(x = Age, fill = ..count..)) + geom_histogram(binwidth = 10) + ggtitle("Histogram of Age") + ylab("Frequency") + xlab("Age") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Histogram for Land value
+```{r}
+ggplot(HP, aes(x = Land.Value, fill = ..count..)) + geom_histogram(binwidth = 20000) + ggtitle("Histogram of Land Value") + ylab("Frequency") + xlab("Land Value") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+#Histogram of percent of neighborhood that graduated college
+```{r}
+ggplot(HP, aes(x = Pct.College, fill = ..count..)) + geom_histogram(binwidth = 5) + ggtitle("Histogram of percent of neighborhood that graduated college") + ylab("Frequency") + xlab("Percent of neighborhood that graduated college") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Histogram of Living Area
+```{r}
+ggplot(HP, aes(x = Living.Area, fill = ..count..)) + geom_histogram(binwidth = 200) + ggtitle("Histogram of Living Area") + ylab("Frequency") + xlab("Living Area") + theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Bar chart of Factor variables
+
+#Distribution of waterfront
+```{r}
+ggplot(HP, aes(x = Waterfront, fill = Waterfront )) + 
+geom_bar()+ ggtitle("Distribution of Waterfront")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of New Construction
+```{r}
+ggplot(HP, aes(x = New.Construct, fill = New.Construct )) + 
+geom_bar()+ ggtitle("Distribution of New Construction")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of Central Air
+```{r}
+ggplot(HP, aes(x = Central.Air, fill = Central.Air )) + 
+geom_bar()+ ggtitle("Distribution of Central Air")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of different Fuel type
+```{r}
+ggplot(HP, aes(x = Fuel.Type, fill = Fuel.Type )) + 
+geom_bar()+ ggtitle("Distribution of different Fuel type")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of different Heat type
+```{r}
+ggplot(HP, aes(x = Heat.Type, fill = Heat.Type )) + 
+geom_bar()+ ggtitle("Distribution of different Heat type")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of different Sewer type
+```{r}
+ggplot(HP, aes(x = Sewer.Type, fill = Sewer.Type )) + 
+geom_bar()+ ggtitle("Distribution of different Sewer type")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of Bedrooms
+```{r}
+ggplot(HP, aes(x = Bedrooms, fill = Bedrooms )) + 
+geom_bar()+ ggtitle("Distribution of Bedrooms")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of Fireplaces
+```{r}
+ggplot(HP, aes(x = Fireplaces, fill = Fireplaces )) + 
+geom_bar()+ ggtitle("Distribution of fireplaces")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of Bathrooms
+```{r}
+ggplot(HP, aes(x = Bathrooms, fill = Bathrooms )) + 
+geom_bar()+ ggtitle("Distribution of Bathrooms")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Distribution of Rooms
+```{r}
+ggplot(HP, aes(x = Rooms, fill = Rooms )) + 
+geom_bar()+ ggtitle("Distribution of rooms")+
+theme(plot.title = element_text(hjust = 0.5))+ geom_text(stat='count',aes(label=..count..),vjust=-0.25)
+```
+
+#Correlation Analysis
+```{r}
+library(ggcorrplot)
+library(car)
+HPCorr <- data.frame(Price, Lot.Size,Age, Land.Value, Living.Area, Pct.College, Bedrooms, Fireplaces, Bathrooms, Rooms)
+corr <- cor(HPCorr)
+round(corr, 2)
+ggcorrplot(corr,lab=TRUE)
+```
+
+#Few predictors show strong relationship with house price. Living Area (0.71), Land Value(0.58), bathrooms(0.6) and rooms(0.53) are highly correlated with response variable Price. On the other hand, Rooms, Bedrooms, Bathrooms and Living Area are correlated to each other.
+
+#Variance Inflation Factor
+```{r}
+model=lm(Price~ Lot.Size + Age +Land.Value + Living.Area + Pct.College + as.numeric(Bedrooms) + as.numeric(Fireplaces) + as.numeric(Bathrooms) + as.numeric(Rooms), data=HP)
+car::vif(model)
+```
+
+
+#Scatter plot of Price vs Lot Size & Analysis of Price ~ Lot.Size
+```{r}
+ggplot(HP, aes(x=Lot.Size, y=Price)) + 
+  geom_point(color='blue', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+model1=lm(Price~Lot.Size,data=HP)
+summary(model1)
+plot(model1, which=1)
+```
+
+#Scatter plot of Price vs Age & Analysis of Price ~ Age
+```{r}
+ggplot(HP, aes(x=Age, y=Price)) + 
+  geom_point(color='blue', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+model2=lm(Price~Age,data=HP)
+summary(model2)
+plot(model2, which=1)
+```
+
+#Scatter plot of Price vs Land Value & Analysis of Price ~ Land Value
+```{r}
+ggplot(HP, aes(x=Land.Value, y=Price)) + 
+  geom_point(color='blue', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+model3=lm(Price~Land.Value,data=HP)
+summary(model3)
+plot(model3, which=1)
+```
+
+#Scatter plot of Price vs Living Area & Analysis of Price ~ Living Area
+```{r}
+ggplot(HP, aes(x=Living.Area, y=Price)) + 
+  geom_point(color='brown', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+model4=lm(Price~Living.Area,data=HP)
+summary(model4)
+plot(model4, which=1)
+```
+
+#Scatter plot of Price vs Pct.College & Analysis of Price ~ Pct.College
+```{r}
+ggplot(HP, aes(x=Pct.College, y=Price)) + 
+  geom_point(color='brown', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+model5=lm(Price~Pct.College,data=HP)
+summary(model5)
+plot(model5, which=1)
+```
+
+##Box plot of house price by Bedrooms & Analysis of Price ~ Bedrooms
+```{r}
+ggplot(HP, aes(x=Bedrooms, y=Price, fill=Bedrooms)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Bedrooms")+
+  theme(plot.title = element_text(hjust = 0.5))
+model6=lm(Price~Bedrooms,data=HP)
+summary(model6)
+plot(model6, which=1)
+```
+
+##Box plot of house price by Fireplaces & Analysis of Price ~ Fireplaces
+```{r}
+ggplot(HP, aes(x=Fireplaces, y=Price, fill=Fireplaces)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Fireplaces")+
+  theme(plot.title = element_text(hjust = 0.5))
+model7=lm(Price~Fireplaces,data=HP)
+summary(model7)
+plot(model7, which=1)
+```
+
+##Box plot of house price by Bathrooms & Analysis of Price ~ Bathrooms
+```{r}
+ggplot(HP, aes(x=Bathrooms, y=Price, fill=Bathrooms)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Bathrooms")+
+  theme(plot.title = element_text(hjust = 0.5))
+model8=lm(Price~Bathrooms,data=HP)
+summary(model8)
+plot(model8, which=1)
+```
+
+#Box plot of house price by Rooms & Analysis of Price ~ Rooms
+```{r}
+ggplot(HP, aes(x=Rooms, y=Price, fill=Rooms)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Rooms")+
+  theme(plot.title = element_text(hjust = 0.5))
+model9=lm(Price~Rooms,data=HP)
+summary(model9)
+plot(model9, which=1)
+```
+
+
+#Boxplot of House Price by Waterfront and t-test for waterfront
+```{r}
+ggplot(HP, aes(x=Waterfront, y=Price, fill=Waterfront)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Waterfront")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Hypothesis test
+#alpha=0.05
+#null hypothesis: There is no significant difference between means of homes where waterfront is present and where waterfront is absent.
+#alternative hypothesis: There is significant difference between means of homes where waterfront is present and where waterfront is absent.
+```{r}
+tapply(Price, Waterfront, mean)
+t.test(Price~Waterfront)
+```
+
+
+#Boxplot of House Price by New Construction and t-test for new.construct
+```{r}
+ggplot(HP, aes(x=New.Construct, y=Price, fill=New.Construct)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by New Construction")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Hypothesis test
+#alpha=0.05
+#null hypothesis: There is no significant difference between means of new constructed homes and old homes.
+#alternative hypothesis: There is significant difference between means of new constructed homes and old homes.
+```{r}
+tapply(Price, New.Construct, mean)
+t.test(Price~New.Construct)
+```
+
+
+#Boxplot of House Price by Central Air and t-test for Central.Air
+```{r}
+ggplot(HP, aes(x=Central.Air, y=Price, fill=Central.Air)) + 
+  geom_boxplot(alpha=0.3) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=4, color="red", fill="red")+
+  ggtitle("Boxplot of House Price by Central Air")+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#Hypothesis test
+#alpha=0.05
+#null hypothesis: There is no significant difference between means of homes where Central Air present and the homes where central air not present.
+#alternative hypothesis: There is significant difference between means of homes where Central Air present and the homes where central air not present.
+```{r}
+tapply(Price, Central.Air, mean)
+t.test(Price~Central.Air)
+```
+
+#ANOVA test based on fuel type
+```{r}
+tapply(Price, Fuel.Type, mean)
+anova<-aov(Price~Fuel.Type) 
+modelaov1 <- lm(Price~Fuel.Type) 
+summary(anova)
+coef(modelaov1)
+```
+
+#ANOVA test based on heat type
+```{r}
+tapply(Price, Heat.Type, mean)
+anova<-aov(Price~Heat.Type) 
+modelaov2 <- lm(Price~Heat.Type) 
+summary(anova)
+coef(modelaov2)
+```
+
+#ANOVA test based on Sewer type
+```{r}
+tapply(Price, Sewer.Type, mean)
+anova<-aov(Price~Sewer.Type) 
+modelaov3 <- lm(Price~Sewer.Type) 
+summary(anova)
+coef(modelaov3)
+```
+
+#Multiple Regression
+```{r}
+modelReg1<-lm(Price~ Land.Value + Living.Area + Bathrooms + Rooms, data=HP)
+summary(modelReg1)
+plot(modelReg1)
+```
+
+```{r}
+modelReg2<-update(modelReg1, ~. -Rooms)
+summary(modelReg2)
+plot(modelReg2)
+```
+
+```{r}
+modelReg3<-update(modelReg2, ~. -Bathrooms)
+summary(modelReg3)
+plot(modelReg3)
+```
+
+```{r}
+anova(modelReg2, modelReg3)
+```
+
+```{r}
+Pred.Price <- predict(modelReg3)
+PredHP <- cbind(HP, Pred.Price)
+head(PredHP)
+```
+
+```{r}
+library(rpart)
+library(rpart.plot)
+modeltree<-rpart(Pred.Price ~., PredHP)
+rpart.plot(modeltree, digits=-3)
+```
+
+```{r}
+HP[179, 1:16]
+predict(modelReg3, list(Land.Value=36600, Living.Area=2114))
+```
+
+```{r}
+ggplot(PredHP, aes(x=Living.Area, y=Pred.Price)) + 
+  geom_point(color='blue', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+
+
+ggplot(PredHP, aes(x=Land.Value, y=Pred.Price)) + 
+  geom_point(color='blue', size = 2) + 
+  geom_smooth(method=lm, color='#2C3E50')
+
+```
+
+
+
+
+

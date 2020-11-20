@@ -1,0 +1,128 @@
+#To load the train and test dataset in R, we use following command
+```{r}
+train <- read.csv("C:\\Users\\Sweta\\Documents\\Data\\train.csv", header=TRUE)
+test <- read.csv("C:\\Users\\Sweta\\Documents\\Data\\test.csv", header=TRUE)
+```
+
+#Add new variable to the dataset: Test data has 418 observations with 10 variables while train data has 891 observations with 11 variables.
+#"Survived" variable is missing in the test data. To add this, command is:
+```{r}
+test.Survived <- data.frame(Survived = rep("None", nrow(test)), test[,])
+```
+
+#Combine data sets: To combine test and train data set row wise, command is 
+```{r}
+data.combined <- rbind (train, test.Survived)
+```
+
+#to check the data type of variables in R
+```{r}
+str(data.combined)
+```
+
+#To change the data type for pclass from int to factor
+```{r}
+data.combined$Pclass <- as.factor(data.combined$Pclass)
+```
+
+#To change the data type for survived from char to factor
+```{r}
+data.combined$Survived <- as.factor(data.combined$Survived)
+```
+
+#To analyze the data in tabular format with respect to "Survived" variable
+```{r}
+table(data.combined$Survived)
+```
+
+#To see the distribution of the data with respect to "Pclass"
+```{r}
+table(data.combined$Pclass)
+```
+
+#For data visualization, ggplot2 has to be installed
+```{r}
+library(ggplot2)
+```
+
+#We make Assumption that Upper class passenger has higher chance of survival rate than others
+```{r}
+train$Pclass <- as.factor(train$Pclass)
+ggplot(train, aes(x = Pclass, fill = factor(Survived))) + geom_bar() +  xlab("Pclass") + ylab("Total Count") +labs(fill = "Survived")
+```
+
+#Check the name variable in train data set
+```{r}
+head(as.character(train$Name))
+```
+
+#To check the unique name in the data.combined set
+```{r}
+length(unique(as.character(data.combined$Name)))
+```
+
+#Convert the data type of Name as character.
+#Find the duplicate names in data.combined.
+#save them in dup.names as character data type
+```{r}
+dup.names <- as.character(data.combined[which(duplicated(as.character(data.combined$Name))), "Name"])
+```
+
+#Extract the records from data.combined where name is in the dup.names
+```{r}
+data.combined[which(data.combined$Name %in% dup.names),]
+```
+
+#Find the Name which has "Miss." in the name in data.combined dataset
+#store them in misses.
+```{r}
+library(stringr) 
+misses <- data.combined[which(str_detect(data.combined$Name, "Miss.")),]
+misses[1:5,]
+```
+
+#Find the Name which has "Mrs." in the name in data.combined
+#store them in mrses.
+```{r}
+mrses <- data.combined[which(str_detect(data.combined$Name, "Mrs.")), ]
+mrses[1:5,]
+```
+#Store all records in "males" data frame where sex is male 
+```{r}
+males <- data.combined[which(train$Sex == "male"), ]
+males[1:5,]
+```
+#Add "Title" variable in the data.combined. 
+#Title contains the title of passenger such as Miss., Mrs. Etc. 
+#We create a function "extractTitle" which will extract the titles from all observations. 
+#These values will be stored in "Title" variable.
+```{r}
+extractTitle <- function(Name) {
+  name <- as.character(Name)  
+  if (length(grep("Miss.", Name)) > 0) {
+    return ("Miss.")
+  } else if (length(grep("Master.", Name)) > 0) {
+    return ("Master.")
+  } else if (length(grep("Mrs.", Name)) > 0) {
+    return ("Mrs.")
+  } else if (length(grep("Mr.", Name)) > 0) {
+    return ("Mr.")
+  } else {
+    return ("Other")
+  }
+}
+
+titles <- NULL
+for (i in 1:nrow(data.combined)) {
+  titles <- c(titles, extractTitle(data.combined[i,"Name"]))
+}
+data.combined$title <- as.factor(titles)
+
+ggplot(data.combined[1:891,], aes(x = title, fill = Survived)) +
+  geom_bar() +
+  facet_wrap(~Pclass) + 
+  ggtitle("Pclass") +
+  xlab("Title") +
+  ylab("Total Count") +
+  labs(fill = "Survived")
+```
